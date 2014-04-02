@@ -12,6 +12,7 @@
     "consolidate": "*",
     "less-middleware": "*",
     "mongoose": "*",
-    "musicmetadata": "*"
+    "musicmetadata": "*",
+    "socket.io" : "*"
   }
 }

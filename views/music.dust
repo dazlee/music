@@ -1,14 +1,65 @@
 <!DOCTYPE html>
 <html>
+<style type="text/css">
+.onPlay {
+	
+}
+</style>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <body>
 
+
+<div id="player_holder"/>
+<audio controls id="player">
+</audio>
+</div>
 {#files}
 <div>
 <span>{.}</span><br>
-<audio controls>
-  <source src="/source/?file={.}" type="audio/mp3">
-</audio>
-</div>
+<button onclick='play("{.}", this)'>play</button>
+
 {/files}
 </body>
 </html>
+<script type="text/javascript">
+var isPlaying = false;
+var nowPlaying = "";
+function play (song_name, button) {
+	var player = $('#player');
+	console.log($(button));
+	if (!isPlaying) {
+		if (nowPlaying !== song_name) {
+			player[0].setAttribute('src', '/source/?file=' + song_name);
+			player[0].load();
+			player[0].play();
+			$('.onPlay').removeClass('onPlay');
+			
+			nowPlaying = song_name;
+		}
+		player[0].play();
+		button.innerHTML = 'pause';
+		button.className = 'onPlay';
+		isPlaying = true;
+	} else {
+		if (nowPlaying === song_name) {
+			player[0].pause();
+
+			button.innerHTML = 'play';
+			isPlaying = false;
+		} else {
+			var audio = $('<source src="/source/?file=' + song_name + '" type="audio/mp3">');
+			player[0].setAttribute('src', '/source/?file=' + song_name);
+			player[0].load();
+			player[0].play();
+			$('.onPlay')[0].innerHTML = 'play';
+			$('.onPlay').removeClass('onPlay');
+
+			button.innerHTML = 'pause';
+			button.className = 'onPlay';
+			isPlaying = true;
+			nowPlaying = song_name;
+		}
+	}
+}
+</script>

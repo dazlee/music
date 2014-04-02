@@ -23,8 +23,16 @@ exports.index = function(req, res){
 exports.music = function(req, res){
 	console.log(__dirname);
 	fs.readdir(path.join(__dirname, '../music-sources'), function (err, files) {
-		res.render('music', { files: files });
-	})
+        console.log(files);
+        var mp3files = [];
+        var mp3regex = /\.mp3/;
+        files.forEach(function (file) {
+            if (mp3regex.test(file)) {
+                mp3files.push(file);
+            }
+        });
+		res.render('music', { files: mp3files });
+	});
 };
 
 exports.source = function (req, res) {
